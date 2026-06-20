@@ -129,7 +129,8 @@
         <h3>Quarterly Performance — Mathematics</h3>
         <canvas id="lineChart" height="220"></canvas>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#1d4e89;"></div>Score</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1d4e89;"></div>Actual Score</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e67e22;"></div>Q4 Estimated (±10 SD)</div>
           <div class="legend-item"><div class="legend-dot" style="background:#2a7d4f;"></div>Above 70%</div>
           <div class="legend-item"><div class="legend-dot" style="background:#c0392b;"></div>Below 70%</div>
         </div>
@@ -137,7 +138,7 @@
       <div class="chart-box">
         <h3>Yearly Average</h3>
         <canvas id="barChart" height="270"></canvas>
-        <div style="margin-top:12px;font-size:.76rem;color:var(--ink-soft);line-height:1.6;">Dashed line = 70% placement threshold. Your bar colour reflects your track.</div>
+        <div style="margin-top:12px;font-size:.76rem;color:var(--ink-soft);line-height:1.6;">Full year average (Q1–Q4) from official records. Dashed line = 70% placement threshold.</div>
       </div>
     </div>
 
@@ -175,56 +176,56 @@
 
 <script>
 const STUDENTS = [
-  {id:"6510139",dob:"25-05-2011",name:"Yibo (Arthur) Wang",       cls:"Y9 B",q:[70.17,68.73,63.4,50.6],   avg:63.23},
-  {id:"5720001",dob:"14-01-2012",name:"Hannah Alisala Barclay",    cls:"Y9 A",q:[55.17,50.07,54.4,55.73],  avg:53.84},
-  {id:"6110039",dob:"26-07-2012",name:"Zikun (Quentin) Chen",      cls:"Y9 B",q:[57.67,55.07,58.6,58.47],  avg:57.45},
-  {id:"6510096",dob:"03-01-2011",name:"Yueming (Frank) Shen",      cls:"Y9 B",q:[75.5,68.47,70.2,61.87],   avg:69.01},
-  {id:"6320044",dob:"07-12-2010",name:"Zhengkun (David) He",       cls:"Y9 A",q:[71.33,71.87,75.2,63.13],  avg:70.38},
-  {id:"6410069",dob:"12-10-2012",name:"Fujiang (Burt) Zhang",      cls:"Y9 A",q:[75.0,73.0,75.4,65.67],    avg:72.27},
-  {id:"6810023",dob:"11-06-2011",name:"Eyawadee Jane (Eya) Magnan",cls:"Y9 A",q:[66.5,66.47,71.0,66.2],   avg:67.54},
-  {id:"6720004",dob:"16-11-2011",name:"Shihan (Lisa) Xu",          cls:"Y9 B",q:[75.17,71.33,70.0,67.53],  avg:71.01},
-  {id:"6710011",dob:"04-08-2012",name:"Thanitphop (Teekao) Lueangrungthip",cls:"Y9 B",q:[72.83,65.67,66.2,67.73],avg:68.11},
-  {id:"6010119",dob:"04-11-2011",name:"Adisa (Maila) Intarawichai",cls:"Y9 B",q:[73.17,65.67,70.8,70.4],   avg:70.01},
-  {id:"6010129",dob:"10-09-2012",name:"Tanawat (Tontoon) Saengsureekulkij",cls:"Y9 B",q:[75.0,71.33,75.4,73.4],avg:73.78},
-  {id:"6620047",dob:"11-03-2011",name:"Pui Sze (Ceci) Chan",       cls:"Y9 B",q:[85.0,82.07,80.6,74.33],   avg:80.5},
-  {id:"6320068",dob:"01-05-2012",name:"Xiaozai (Jeremy) Zhu",      cls:"Y9 B",q:[80.33,65.67,77.0,80.33],  avg:75.83},
-  {id:"6010136",dob:"14-11-2011",name:"Nanthapat (Nakin) Nampuan", cls:"Y9 A",q:[88.0,82.67,84.0,81.8],    avg:84.12},
-  {id:"6320019",dob:"18-01-2012",name:"Jiaqi (Angela) Hu",         cls:"Y9 B",q:[88.17,87.13,89.4,81.8],   avg:86.63},
-  {id:"6410109",dob:"21-04-2012",name:"Camille Lavinia Lima",       cls:"Y9 B",q:[70.67,62.47,65.0,82.07],  avg:70.05},
-  {id:"5810024",dob:"23-04-2012",name:"Nattanan (Up) Phosri",      cls:"Y9 B",q:[85.33,80.67,85.0,82.6],   avg:83.4},
-  {id:"6010068",dob:"17-01-2012",name:"Phubing (Punpon) Chaivongkeaw",cls:"Y9 B",q:[88.17,80.53,90.0,85.8],avg:86.13},
-  {id:"6710069",dob:"15-03-2012",name:"Yen-Ling (Serena) Chen",    cls:"Y9 B",q:[88.83,92.53,93.0,86.07],  avg:90.11},
-  {id:"6420025",dob:"29-07-2010",name:"Yiran (Angela) Zheng",      cls:"Y9 B",q:[95.33,88.2,93.4,86.4],    avg:90.83},
-  {id:"5920006",dob:"03-09-2011",name:"Gorya Tanjaturon",           cls:"Y9 A",q:[93.83,81.33,87.2,87.6],   avg:87.49},
-  {id:"6720017",dob:"21-09-2010",name:"Yixuan (Ashley) Wu",        cls:"Y9 A",q:[null,null,65.0,89.07],     avg:77.03},
-  {id:"6010118",dob:"28-02-2012",name:"Peemphat (Peem) Likitanupak",cls:"Y9 B",q:[93.0,92.73,90.2,90.47],  avg:91.6},
-  {id:"5810003",dob:"01-03-2012",name:"Kawee (Bam) Thitiwattanakarn",cls:"Y9 A",q:[92.5,90.33,90.2,90.93], avg:90.99},
-  {id:"6010030",dob:"16-08-2012",name:"Zihan (Mandy) Ma",          cls:"Y9 A",q:[97.17,87.33,97.0,92.67],  avg:93.54},
-  {id:"6510116",dob:"13-04-2011",name:"Semen (Simon) Popov",       cls:"Y9 B",q:[67.0,44.4,50.0,45.0],     avg:51.6},
-  {id:"5910025",dob:"12-04-2012",name:"Adinai (Ohmmy) Laoyeepa",   cls:"Y9 B",q:[82.0,54.8,54.0,48.2],     avg:59.75},
-  {id:"6610083",dob:"05-03-2010",name:"Yushi (William) Wang",      cls:"Y9 B",q:[54.0,47.6,51.0,52.4],     avg:51.25},
-  {id:"6720072",dob:"28-12-2010",name:"Zixi (Dave) Zhang",         cls:"Y9 A",q:[84.0,64.0,74.0,53.8],     avg:68.95},
-  {id:"6720054",dob:"09-04-2011",name:"Xinuo (Cassie) Qian",       cls:"Y9 A",q:[88.0,82.8,76.0,55.0],     avg:75.45},
-  {id:"6810026",dob:"15-06-2011",name:"Sinwa Petratos",            cls:"Y9 A",q:[56.0,43.8,56.0,57.0],     avg:53.2},
-  {id:"6710072",dob:"22-09-2011",name:"Sam Henry Davies",           cls:"Y9 B",q:[50.0,42.0,50.0,59.4],     avg:50.35},
-  {id:"6810029",dob:"28-06-2011",name:"Zun Pann Yati (Eve)",       cls:"Y9 A",q:[60.0,50.2,68.0,67.2],     avg:61.35},
-  {id:"6620035",dob:"03-03-2011",name:"Minju (Leo) Kim",           cls:"Y9 B",q:[80.0,51.6,52.0,62.4],     avg:61.5},
-  {id:"6510059",dob:"01-07-2010",name:"Tytanong (Tyty) Cooper",    cls:"Y9 A",q:[72.0,44.8,58.0,64.6],     avg:59.85},
-  {id:"6720010",dob:"30-03-2011",name:"Tingyan (Mia) Yu",          cls:"Y9 A",q:[93.0,82.6,85.0,64.8],     avg:81.35},
-  {id:"6810005",dob:"18-09-2011",name:"Kejie (Luke) Chen",         cls:"Y9 A",q:[80.0,55.6,58.0,65.0],     avg:64.65},
-  {id:"6720056",dob:"18-08-2011",name:"Haijing (Jayden) Liu",      cls:"Y9 A",q:[70.0,53.8,68.0,66.0],     avg:64.45},
-  {id:"6510114",dob:"12-06-2012",name:"Daiying (Kimi) Lu",         cls:"Y9 A",q:[73.0,45.4,60.0,66.4],     avg:61.2},
-  {id:"6810031",dob:"13-10-2011",name:"Malikha (Irene)",           cls:"Y9 A",q:[91.0,78.0,88.0,69.0],     avg:81.5},
-  {id:"6810065",dob:"12-01-2012",name:"May Chan Myae Sharr (Mabel)",cls:"Y9 B",q:[84.0,71.2,58.0,71.8],   avg:71.25},
-  {id:"6810058",dob:"06-09-2011",name:"Chi-Yun (Doris) Teng",      cls:"Y9 B",q:[87.0,72.8,66.0,72.2],    avg:74.5},
-  {id:"6610110",dob:"06-02-2012",name:"Junyan (Felix) Zhu",        cls:"Y9 B",q:[80.0,57.0,64.0,74.0],     avg:68.75},
-  {id:"6610133",dob:"24-02-2011",name:"Jiayi (Helen) Zhang",       cls:"Y9 A",q:[83.0,75.4,75.0,74.4],     avg:76.95},
-  {id:"6420001",dob:"19-10-2010",name:"Haojun (Eason) Chen",       cls:"Y9 A",q:[94.0,87.6,82.0,76.8],     avg:85.1},
-  {id:"6120022",dob:"05-03-2012",name:"Sasinakin (Seen) Janthaping",cls:"Y9 B",q:[73.0,74.2,77.0,76.8],   avg:75.25},
-  {id:"6810053",dob:"16-02-2012",name:"Soraya (Amy) Wongpramote",  cls:"Y9 A",q:[82.0,71.2,77.0,77.4],     avg:76.9},
-  {id:"6820029",dob:"N/A",       name:"Hein Khant Aung (Marcus)",  cls:"Y9 A",q:[null,null,76.0,79.4],      avg:77.7},
-  {id:"6810036",dob:"10-06-2011",name:"Zimu (Melody) Zeng",        cls:"Y9 A",q:[95.0,90.2,86.0,82.4],     avg:88.4},
-  {id:"6720039",dob:"11-03-2012",name:"Xuzhi (Hugo) Hu",           cls:"Y9 A",q:[87.0,78.6,77.0,87.8],     avg:82.6},
+  {id:"6510139",dob:"25-05-2011",name:"Yibo (Arthur) Wang",                    cls:"Y9 B",q:[70.17,68.73,63.4,50.6],  avg:63.23, placement:"Core"},
+  {id:"5720001",dob:"14-01-2012",name:"Hannah Alisala Barclay",                cls:"Y9 A",q:[55.17,50.07,54.4,55.73], avg:53.84, placement:"Core"},
+  {id:"6110039",dob:"26-07-2012",name:"Zikun (Quentin) Chen",                  cls:"Y9 B",q:[57.67,55.07,58.6,58.47], avg:57.45, placement:"Core"},
+  {id:"6510096",dob:"03-01-2011",name:"Yueming (Frank) Shen",                  cls:"Y9 B",q:[75.5,68.47,70.2,61.87],  avg:69.01, placement:"Core"},
+  {id:"6320044",dob:"07-12-2010",name:"Zhengkun (David) He",                   cls:"Y9 A",q:[71.33,71.87,75.2,63.13], avg:70.38, placement:"Extended"},
+  {id:"6410069",dob:"12-10-2012",name:"Fujiang (Burt) Zhang",                  cls:"Y9 A",q:[75.0,73.0,75.4,65.67],   avg:72.27, placement:"Extended"},
+  {id:"6810023",dob:"11-06-2011",name:"Eyawadee Jane (Eya) Magnan",            cls:"Y9 A",q:[66.5,66.47,71.0,66.2],   avg:67.54, placement:"Core"},
+  {id:"6720004",dob:"16-11-2011",name:"Shihan (Lisa) Xu",                      cls:"Y9 B",q:[75.17,71.33,70.0,67.53], avg:71.01, placement:"Extended"},
+  {id:"6710011",dob:"04-08-2012",name:"Thanitphop (Teekao) Lueangrungthip",    cls:"Y9 B",q:[72.83,65.67,66.2,67.73], avg:68.11, placement:"Core"},
+  {id:"6010119",dob:"04-11-2011",name:"Adisa (Maila) Intarawichai",            cls:"Y9 B",q:[73.17,65.67,70.8,70.4],  avg:70.01, placement:"Extended"},
+  {id:"6010129",dob:"10-09-2012",name:"Tanawat (Tontoon) Saengsureekulkij",    cls:"Y9 B",q:[75.0,71.33,75.4,73.4],   avg:73.78, placement:"Extended"},
+  {id:"6620047",dob:"11-03-2011",name:"Pui Sze (Ceci) Chan",                   cls:"Y9 B",q:[85.0,82.07,80.6,74.33],  avg:80.5,  placement:"Extended"},
+  {id:"6320068",dob:"01-05-2012",name:"Xiaozai (Jeremy) Zhu",                  cls:"Y9 B",q:[80.33,65.67,77.0,80.33], avg:75.83, placement:"Extended"},
+  {id:"6010136",dob:"14-11-2011",name:"Nanthapat (Nakin) Nampuan",             cls:"Y9 A",q:[88.0,82.67,84.0,81.8],   avg:84.12, placement:"Extended"},
+  {id:"6320019",dob:"18-01-2012",name:"Jiaqi (Angela) Hu",                     cls:"Y9 B",q:[88.17,87.13,89.4,81.8],  avg:86.63, placement:"Extended"},
+  {id:"6410109",dob:"21-04-2012",name:"Camille Lavinia Lima",                   cls:"Y9 B",q:[70.67,62.47,65.0,82.07], avg:70.05, placement:"Extended"},
+  {id:"5810024",dob:"23-04-2012",name:"Nattanan (Up) Phosri",                  cls:"Y9 B",q:[85.33,80.67,85.0,82.6],  avg:83.4,  placement:"Extended"},
+  {id:"6010068",dob:"17-01-2012",name:"Phubing (Punpon) Chaivongkeaw",         cls:"Y9 B",q:[88.17,80.53,90.0,85.8],  avg:86.13, placement:"Extended"},
+  {id:"6710069",dob:"15-03-2012",name:"Yen-Ling (Serena) Chen",                cls:"Y9 B",q:[88.83,92.53,93.0,86.07], avg:90.11, placement:"Extended"},
+  {id:"6420025",dob:"29-07-2010",name:"Yiran (Angela) Zheng",                  cls:"Y9 B",q:[95.33,88.2,93.4,86.4],   avg:90.83, placement:"Extended"},
+  {id:"5920006",dob:"03-09-2011",name:"Gorya Tanjaturon",                       cls:"Y9 A",q:[93.83,81.33,87.2,87.6],  avg:87.49, placement:"Extended"},
+  {id:"6720017",dob:"21-09-2010",name:"Yixuan (Ashley) Wu",                    cls:"Y9 A",q:[null,null,65.0,89.07],    avg:77.03, placement:"Extended"},
+  {id:"6010118",dob:"28-02-2012",name:"Peemphat (Peem) Likitanupak",           cls:"Y9 B",q:[93.0,92.73,90.2,90.47],  avg:91.6,  placement:"Extended"},
+  {id:"5810003",dob:"01-03-2012",name:"Kawee (Bam) Thitiwattanakarn",          cls:"Y9 A",q:[92.5,90.33,90.2,90.93],  avg:90.99, placement:"Extended"},
+  {id:"6010030",dob:"16-08-2012",name:"Zihan (Mandy) Ma",                      cls:"Y9 A",q:[97.17,87.33,97.0,92.67], avg:93.54, placement:"Extended"},
+  {id:"6510116",dob:"13-04-2011",name:"Semen (Simon) Popov",                   cls:"Y9 B",q:[67.0,44.4,50.0,45.0],    avg:51.6,  placement:"Core"},
+  {id:"5910025",dob:"12-04-2012",name:"Adinai (Ohmmy) Laoyeepa",               cls:"Y9 B",q:[82.0,54.8,54.0,48.2],    avg:59.75, placement:"Core"},
+  {id:"6610083",dob:"05-03-2010",name:"Yushi (William) Wang",                  cls:"Y9 B",q:[54.0,47.6,51.0,52.4],    avg:51.25, placement:"Core"},
+  {id:"6720072",dob:"28-12-2010",name:"Zixi (Dave) Zhang",                     cls:"Y9 A",q:[84.0,64.0,74.0,53.8],    avg:68.95, placement:"Core"},
+  {id:"6720054",dob:"09-04-2011",name:"Xinuo (Cassie) Qian",                   cls:"Y9 A",q:[88.0,82.8,76.0,55.0],    avg:75.45, placement:"Extended"},
+  {id:"6810026",dob:"15-06-2011",name:"Sinwa Petratos",                        cls:"Y9 A",q:[56.0,43.8,56.0,57.0],    avg:53.2,  placement:"Core"},
+  {id:"6710072",dob:"22-09-2011",name:"Sam Henry Davies",                       cls:"Y9 B",q:[50.0,42.0,50.0,59.4],    avg:50.35, placement:"Core"},
+  {id:"6810029",dob:"28-06-2011",name:"Zun Pann Yati (Eve)",                   cls:"Y9 A",q:[60.0,50.2,68.0,67.2],    avg:61.35, placement:"Core"},
+  {id:"6620035",dob:"03-03-2011",name:"Minju (Leo) Kim",                       cls:"Y9 B",q:[80.0,51.6,52.0,62.4],    avg:61.5,  placement:"Core"},
+  {id:"6510059",dob:"01-07-2010",name:"Tytanong (Tyty) Cooper",                cls:"Y9 A",q:[72.0,44.8,58.0,64.6],    avg:59.85, placement:"Core"},
+  {id:"6720010",dob:"30-03-2011",name:"Tingyan (Mia) Yu",                      cls:"Y9 A",q:[93.0,82.6,85.0,64.8],    avg:81.35, placement:"Extended"},
+  {id:"6810005",dob:"18-09-2011",name:"Kejie (Luke) Chen",                     cls:"Y9 A",q:[80.0,55.6,58.0,65.0],    avg:64.65, placement:"Core"},
+  {id:"6720056",dob:"18-08-2011",name:"Haijing (Jayden) Liu",                  cls:"Y9 A",q:[70.0,53.8,68.0,66.0],    avg:64.45, placement:"Core"},
+  {id:"6510114",dob:"12-06-2012",name:"Daiying (Kimi) Lu",                     cls:"Y9 A",q:[73.0,45.4,60.0,66.4],    avg:61.2,  placement:"Core"},
+  {id:"6810031",dob:"13-10-2011",name:"Malikha (Irene)",                       cls:"Y9 A",q:[91.0,78.0,88.0,69.0],    avg:81.5,  placement:"Extended"},
+  {id:"6810065",dob:"12-01-2012",name:"May Chan Myae Sharr (Mabel)",           cls:"Y9 B",q:[84.0,71.2,58.0,71.8],    avg:71.25, placement:"Extended"},
+  {id:"6810058",dob:"06-09-2011",name:"Chi-Yun (Doris) Teng",                  cls:"Y9 B",q:[87.0,72.8,66.0,72.2],    avg:74.5,  placement:"Extended"},
+  {id:"6610110",dob:"06-02-2012",name:"Junyan (Felix) Zhu",                    cls:"Y9 B",q:[80.0,57.0,64.0,74.0],    avg:68.75, placement:"Core"},
+  {id:"6610133",dob:"24-02-2011",name:"Jiayi (Helen) Zhang",                   cls:"Y9 A",q:[83.0,75.4,75.0,74.4],    avg:76.95, placement:"Extended"},
+  {id:"6420001",dob:"19-10-2010",name:"Haojun (Eason) Chen",                   cls:"Y9 A",q:[94.0,87.6,82.0,76.8],    avg:85.1,  placement:"Extended"},
+  {id:"6120022",dob:"05-03-2012",name:"Sasinakin (Seen) Janthaping",           cls:"Y9 B",q:[73.0,74.2,77.0,76.8],    avg:75.25, placement:"Extended"},
+  {id:"6810053",dob:"16-02-2012",name:"Soraya (Amy) Wongpramote",              cls:"Y9 A",q:[82.0,71.2,77.0,77.4],    avg:76.9,  placement:"Extended"},
+  {id:"6820029",dob:"N/A",       name:"Hein Khant Aung (Marcus)",              cls:"Y9 A",q:[null,null,76.0,79.4],     avg:77.7,  placement:"Extended"},
+  {id:"6810036",dob:"10-06-2011",name:"Zimu (Melody) Zeng",                    cls:"Y9 A",q:[95.0,90.2,86.0,82.4],    avg:88.4,  placement:"Extended"},
+  {id:"6720039",dob:"11-03-2012",name:"Xuzhi (Hugo) Hu",                       cls:"Y9 A",q:[87.0,78.6,77.0,87.8],    avg:82.6,  placement:"Extended"},
 ];
 
 let lc=null, bc=null;
@@ -244,10 +245,9 @@ function showReport(st){
   document.getElementById('login-section').style.display='none';
   document.getElementById('report-section').style.display='block';
 
-  // Q4 is To Be Determined — use only Q1–Q3 for average and placement
-  const q1to3 = st.q.slice(0,3).filter(v=>v!==null);
-  const avg   = q1to3.length ? parseFloat((q1to3.reduce((a,b)=>a+b,0)/q1to3.length).toFixed(2)) : 0;
-  const ext   = avg >= 70;
+  // Use official placement from database
+  const avg = st.avg;
+  const ext = st.placement === "Extended";
 
   document.getElementById('rpt-name').textContent = st.name;
   document.getElementById('rpt-meta').textContent = `ID: ${st.id}  ·  Class: ${st.cls}  ·  DOB: ${st.dob}  ·  Academic Year 2026–2027`;
@@ -256,20 +256,26 @@ function showReport(st){
   document.getElementById('rpt-track').textContent     = ext?'Extended':'Core';
   document.getElementById('rpt-track-sub').textContent = ext?'IGCSE Extended Mathematics':'IGCSE Core Mathematics';
 
-  // table — Q1 to Q3 scored, Q4 = TBD
+  // table — Q1-Q3 actual, Q4 estimated ±10 std dev
   const tbody=document.getElementById('score-tbody'); tbody.innerHTML='';
   const qn=['Q1 — First Quarter','Q2 — Second Quarter','Q3 — Third Quarter','Q4 — Fourth Quarter'];
+  const STD = 10;
   st.q.forEach((sc,i)=>{
     const isTBD = i===3;
     const na    = sc===null && !isTBD;
-    const pass  = !isTBD && !na && sc>=70;
     const tr=document.createElement('tr');
     if(isTBD){
+      // Estimate Q4 from existing quarters avg ±10
+      const knownQ = st.q.slice(0,3).filter(v=>v!==null);
+      const estBase = knownQ.length ? knownQ.reduce((a,b)=>a+b,0)/knownQ.length : avg;
+      const estLow  = Math.max(0,  (estBase - STD).toFixed(1));
+      const estHigh = Math.min(100, (estBase + STD).toFixed(1));
       tr.innerHTML=`<td class="subject">${qn[i]}</td>
-        <td class="na-cell" style="color:#e67e22;font-weight:600;">TBD</td>
-        <td class="na-cell" style="color:#e67e22;">⏳ 25 June 2026 · 3:00 PM</td>
-        <td style="color:#e67e22;font-size:.8rem;font-style:italic;">To be determined</td>`;
+        <td style="color:#e67e22;font-weight:600;">${parseFloat(estBase).toFixed(1)}% <span style="font-size:.72rem;font-weight:400;">est.</span></td>
+        <td style="color:#e67e22;font-size:.8rem;">⏳ Range: ${estLow}% – ${estHigh}% <span style="font-size:.7rem;">(±${STD} SD)</span></td>
+        <td style="color:#e67e22;font-size:.8rem;font-style:italic;">Estimated · 25 Jun 2026</td>`;
     } else {
+      const pass = !na && sc>=70;
       tr.innerHTML=`<td class="subject">${qn[i]}</td>
         <td class="${na?'na-cell':pass?'pass-cell':'fail-cell'}">${na?'N/A':sc+'%'}</td>
         <td class="${na?'na-cell':pass?'pass-cell':'fail-cell'}">${na?'— Not recorded':pass?'✓ Above threshold':'✗ Below threshold'}</td>
@@ -278,54 +284,81 @@ function showReport(st){
     tbody.appendChild(tr);
   });
   const avgTr=document.createElement('tr'); avgTr.className='avg-row';
-  avgTr.innerHTML=`<td class="subject">Q1–Q3 Average <span style="font-size:.72rem;font-weight:400;color:#e67e22;">(Q4 pending)</span></td>
-    <td class="${ext?'pass-cell':'fail-cell'}">${avg.toFixed(2)}%</td>
-    <td class="${ext?'pass-cell':'fail-cell'}">${ext?'✓ Extended track':'✗ Core track'}</td>
-    <td style="color:var(--ink-soft);font-size:.8rem;">Placement basis</td>`;
+  avgTr.innerHTML=`<td class="subject">Yearly Average <span style="font-size:.72rem;font-weight:400;color:#e67e22;">(Q4 pending)</span></td>
+    <td style="color:#e67e22;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">TBD</td>
+    <td style="color:#e67e22;font-size:.8rem;">⏳ Available after 25 Jun 2026</td>
+    <td style="color:var(--ink-soft);font-size:.8rem;">Final placement basis</td>`;
   tbody.appendChild(avgTr);
   buildCharts(st, avg, ext);
 }
 
 function buildCharts(st, avg, ext){
   if(lc){lc.destroy();lc=null;} if(bc){bc.destroy();bc=null;}
-  const labels=['Q1','Q2','Q3','Q4 (TBD)'];
-  const raw=[st.q[0], st.q[1], st.q[2], null];
-  const pointColors=raw.map(v=>v===null?'transparent':v>=70?'#2a7d4f':'#c0392b');
+
+  // Estimate Q4 from Q1–Q3 mean
+  const knownQ = st.q.slice(0,3).filter(v=>v!==null);
+  const q4est  = knownQ.length ? parseFloat((knownQ.reduce((a,b)=>a+b,0)/knownQ.length).toFixed(1)) : avg;
+  const STD = 10;
+  const q4low  = parseFloat(Math.max(0,   q4est - STD).toFixed(1));
+  const q4high = parseFloat(Math.min(100, q4est + STD).toFixed(1));
+
+  const labels=['Q1','Q2','Q3','Q4 (est.)'];
+  const actual=[st.q[0], st.q[1], st.q[2], null];
+  const estimated=[null, null, null, q4est];
+  const pointColors=actual.map(v=>v===null?'transparent':v>=70?'#2a7d4f':'#c0392b');
+
   lc=new Chart(document.getElementById('lineChart'),{
     type:'line',
     data:{
       labels,
       datasets:[
-        {label:'Score (%)',data:raw,borderColor:'#1d4e89',backgroundColor:'rgba(29,78,137,.1)',
+        // Actual Q1-Q3 line
+        {label:'Actual Score',data:actual,borderColor:'#1d4e89',backgroundColor:'rgba(29,78,137,.08)',
          pointBackgroundColor:pointColors,pointRadius:[7,7,7,0],pointHoverRadius:[9,9,9,0],
-         borderWidth:2.5,tension:.35,fill:true,spanGaps:false},
+         borderWidth:2.5,tension:.35,fill:true,spanGaps:false,order:1},
+        // Estimated Q4 point
+        {label:'Estimated Q4',data:estimated,borderColor:'#e67e22',backgroundColor:'rgba(230,126,34,.15)',
+         pointBackgroundColor:'#e67e22',pointStyle:'rectRot',pointRadius:[0,0,0,8],pointHoverRadius:[0,0,0,10],
+         borderWidth:2,borderDash:[5,4],tension:0,fill:false,spanGaps:false,order:2},
+        // Error bar upper
+        {label:'Q4 Est. High',data:[null,null,q4est,q4high],borderColor:'rgba(230,126,34,.35)',
+         borderWidth:1,borderDash:[3,3],pointRadius:0,fill:false,spanGaps:false,order:3},
+        // Error bar lower
+        {label:'Q4 Est. Low',data:[null,null,q4est,q4low],borderColor:'rgba(230,126,34,.35)',
+         borderWidth:1,borderDash:[3,3],pointRadius:0,fill:false,spanGaps:false,order:3},
+        // 70% threshold
         {label:'70% Threshold',data:[70,70,70,70],borderColor:'#c0392b',
-         borderDash:[6,4],borderWidth:1.8,pointRadius:0,fill:false}
+         borderDash:[6,4],borderWidth:1.8,pointRadius:0,fill:false,order:4}
       ]
     },
     options:{responsive:true,interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
-        if(ctx.datasetIndex===1) return ` Threshold: ${ctx.raw}%`;
-        return ctx.raw===null?' Q4: To be determined 25 Jun 2026':(` Score: ${ctx.raw}%`);
-      }}}},
+      plugins:{legend:{display:false},tooltip:{
+        filter: ctx => ctx.datasetIndex < 2,
+        callbacks:{label:ctx=>{
+          if(ctx.datasetIndex===0) return ctx.raw===null?'':` Actual: ${ctx.raw}%`;
+          if(ctx.datasetIndex===1) return ctx.raw===null?'':[` Q4 Est.: ${ctx.raw}%`, ` Range: ${q4low}% – ${q4high}% (±${STD} SD)`];
+          return '';
+        }}}},
       scales:{y:{min:0,max:100,grid:{color:'#eeeae0'},ticks:{font:{family:'Helvetica Neue',size:11},callback:v=>v+'%'}},
               x:{grid:{display:false},ticks:{font:{family:'Helvetica Neue',size:12,weight:'600'},
                 color:(_,i)=>i===3?'#e67e22':'#1a1a2e'}}}}
   });
+
+  // Bar chart — full year average (official from database)
   bc=new Chart(document.getElementById('barChart'),{
     type:'bar',
     data:{
-      labels:['Q1–Q3\nAverage'],
+      labels:['Yearly\nAverage'],
       datasets:[
-        {label:'Average Score',data:[parseFloat(avg.toFixed(2))],
+        {label:'Full Year Average',data:[parseFloat(avg.toFixed(2))],
          backgroundColor:ext?'rgba(29,78,137,.75)':'rgba(192,57,43,.75)',
          borderColor:ext?'#1d4e89':'#c0392b',borderWidth:2,borderRadius:3,barThickness:70},
-        {label:'Threshold',data:[70],backgroundColor:'rgba(192,57,43,.1)',
+        {label:'Threshold',data:[70],backgroundColor:'rgba(192,57,43,.08)',
          borderColor:'#c0392b',borderWidth:1.5,borderRadius:3,barThickness:70}
       ]
     },
     options:{responsive:true,plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:ctx=>ctx.datasetIndex===0?` Q1–Q3 Avg: ${ctx.raw}%`:` Threshold: ${ctx.raw}%`}}},
+      tooltip:{callbacks:{label:ctx=>ctx.datasetIndex===0?` Full Year Avg: ${ctx.raw}%`:` Threshold: ${ctx.raw}%`}}},
       scales:{y:{min:0,max:100,grid:{color:'#eeeae0'},ticks:{font:{family:'Helvetica Neue',size:11},callback:v=>v+'%'}},
               x:{grid:{display:false},ticks:{font:{family:'Helvetica Neue',size:12}}}}},
     plugins:[{id:'tLine',afterDraw(chart){
